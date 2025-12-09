@@ -22,7 +22,7 @@ function App() {
           count is {count}
         </button>
         <p>
-          Edit <code>src/App.jsx</code> LIB
+          Edit <code>src/App.jsx</code> LIBRARY
         </p>
       </div>
       <p className="read-the-docs">
