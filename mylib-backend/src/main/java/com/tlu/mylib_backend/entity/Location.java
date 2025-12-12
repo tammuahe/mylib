@@ -18,7 +18,6 @@ import lombok.Setter;
 public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "location_id")
     private int id;
 
     @Column(name = "shelf_no")

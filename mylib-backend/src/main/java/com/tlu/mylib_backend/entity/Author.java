@@ -2,8 +2,6 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,13 +21,12 @@ import lombok.Setter;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "author_id")
     private long id;
 
+    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "authors")
-    @JsonIgnore
     private Set<Book> books;
 
 }

@@ -19,7 +19,6 @@ public class Staff {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "staff_id")
     private long id;
 
     @Column(name = "first_name")

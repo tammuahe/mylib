@@ -2,7 +2,6 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tlu.mylib_backend.enums.Language;
 
 import jakarta.persistence.Column;
@@ -26,7 +25,6 @@ import lombok.Setter;
 public class Publisher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "publisher_id")
     private long id;
 
     @Column(name = "name")
@@ -37,7 +35,6 @@ public class Publisher {
     private Language language;
 
     @OneToMany(mappedBy = "publisher")
-    @JsonIgnore
     private Set<Book> books;
 
 }
