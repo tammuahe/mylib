@@ -2,16 +2,15 @@ package com.tlu.mylib_backend.service;
 
 import java.util.List;
 
-import com.tlu.mylib_backend.dto.BorrowDTO;
 import com.tlu.mylib_backend.entity.Borrow;
 import com.tlu.mylib_backend.enums.BorrowStatus;
 
 public interface BorrowService {
-    List<Borrow> findAll();
+    List<Borrow> getAllBorrows();
 
-    Borrow create(BorrowDTO borrow);
+    Borrow addBorrow(Borrow borrow);
 
-    void delete(long id);
+    void deleteBorrowById(long id);
 
-    Borrow updateStatus(long id, BorrowStatus borrowStatus);
+    Borrow updateBorrowStatusById(long id, BorrowStatus borrowStatus);
 }

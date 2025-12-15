@@ -2,17 +2,16 @@ package com.tlu.mylib_backend.service;
 
 import java.util.List;
 
-import com.tlu.mylib_backend.dto.BookDTO;
 import com.tlu.mylib_backend.entity.Book;
 
 public interface BookService {
-    List<Book> findAll();
+    List<Book> getAllBooks();
 
-    List<Book> search(String keyword);
+    List<Book> searchBooksByTitleOrAuthor(String keyword);
 
-    Book create(BookDTO book);
+    Book addBook(Book book);
 
-    Book update(long id, BookDTO book);
+    Book updateBookById(long id, Book book);
 
-    void delete(long id);
+    void deleteBookById(long id);
 }
