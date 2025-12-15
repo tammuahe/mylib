@@ -2,6 +2,8 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +29,7 @@ public class Author {
     private String name;
 
     @ManyToMany(mappedBy = "authors")
+    @JsonBackReference
     private Set<Book> books;
 
 }

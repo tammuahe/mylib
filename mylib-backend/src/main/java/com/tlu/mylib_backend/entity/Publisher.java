@@ -2,6 +2,7 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.tlu.mylib_backend.enums.Language;
 
 import jakarta.persistence.Column;
@@ -35,6 +36,7 @@ public class Publisher {
     private Language language;
 
     @OneToMany(mappedBy = "publisher")
+    @JsonBackReference
     private Set<Book> books;
 
 }

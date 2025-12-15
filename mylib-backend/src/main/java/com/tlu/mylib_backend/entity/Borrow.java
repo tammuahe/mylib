@@ -2,6 +2,7 @@ package com.tlu.mylib_backend.entity;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.tlu.mylib_backend.enums.BorrowStatus;
 
 import jakarta.persistence.Column;
@@ -31,10 +32,12 @@ public class Borrow {
 
     @ManyToOne
     @JoinColumn(name = "book_id")
+    @JsonManagedReference
     private Book book;
 
     @ManyToOne
     @JoinColumn(name = "member_id")
+    @JsonManagedReference
     private Member member;
 
     @Column(name = "borrow_at")
@@ -48,6 +51,7 @@ public class Borrow {
     
     @ManyToOne
     @JoinColumn(name = "staff_id")
+    @JsonManagedReference
     private Staff issuedBy;
 
 }

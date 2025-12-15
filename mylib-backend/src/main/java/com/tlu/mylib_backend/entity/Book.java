@@ -2,6 +2,8 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -56,5 +58,6 @@ public class Book {
 
     @ManyToMany
     @JoinTable(name = "books_authors", joinColumns = @JoinColumn(name = "book_id"), inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @JsonManagedReference
     private Set<Author> authors;
 }
