@@ -6,11 +6,11 @@ import com.tlu.mylib_backend.entity.Borrow;
 import com.tlu.mylib_backend.enums.BorrowStatus;
 
 public interface BorrowService {
-    List<Borrow> getAllBorrows();
+    List<Borrow> findAll();
 
-    Borrow addBorrow(Borrow borrow);
+    Borrow create(Borrow borrow);
 
-    void deleteBorrowById(long id);
+    void delete(long id);
 
-    Borrow updateBorrowStatusById(long id, BorrowStatus borrowStatus);
+    Borrow updateStatus(long id, BorrowStatus borrowStatus);
 }

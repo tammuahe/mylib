@@ -6,9 +6,9 @@ import com.tlu.mylib_backend.entity.Staff;
 
 
 public interface StaffService {
-    List<Staff> getAllStaffs();
+    List<Staff> findAll();
 
-    Staff addStaff(Staff staff);
+    Staff create(Staff staff);
 
-    void deleteStaffById(long id);
+    void delete(long id);
 }

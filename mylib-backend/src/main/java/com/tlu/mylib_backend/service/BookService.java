@@ -5,13 +5,13 @@ import java.util.List;
 import com.tlu.mylib_backend.entity.Book;
 
 public interface BookService {
-    List<Book> getAllBooks();
+    List<Book> findAll();
 
-    List<Book> searchBooksByTitleOrAuthor(String keyword);
+    List<Book> search(String keyword);
 
-    Book addBook(Book book);
+    Book create(Book book);
 
-    Book updateBookById(long id, Book book);
+    Book update(long id, Book book);
 
-    void deleteBookById(long id);
+    void delete(long id);
 }
