@@ -40,7 +40,7 @@ const BookMang = () => {
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
-                <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} />
+                <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
                 <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
             </div>
             <div className="w-full px-7 pb-7">
