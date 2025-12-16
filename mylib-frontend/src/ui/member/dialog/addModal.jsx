@@ -1,34 +1,25 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const AddDialog = ({ toggleDialog }) => {
-    const [newBook, setNewBook] = useState({
-        book_id: 0,
-        title: "",
-        category: "",
-        publisher: "",
-        publication_year: "",
-        edition: "",
-        name: "",
-        copy_total: "",
-        copy_available: "",
+    const [newMember, setNewMember] = useState({
+        firstName: "",
+        lastName: "",
+        phone: "",
+        city: "",
+        email: "",
+        active: true,
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
-        setNewBook((prev) => ({
+        setNewMember((prev) => ({
             ...prev,
             [name]: value,
         }));
     };
-    useEffect(() => {
-        setNewBook((prev) => ({
-            ...prev,
-            copy_available: prev.copy_total,
-        }));
-    }, [newBook.copy_total]);
 
     const handleAdd = () =>{
-        console.log(newBook);
+        console.log(newMember);
     }
 
     return (
@@ -47,11 +38,22 @@ const AddDialog = ({ toggleDialog }) => {
 
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col">
-                                <label className="self-start">Họ và Tên</label>
+                                <label className="self-start">Họ</label>
                                 <input
                                     type="text"
-                                    name="title"
-                                    value={newBook.title}
+                                    name="lastName"
+                                    value={newMember.lastName}
+                                    onChange={handleChange}
+                                    className="px-3 py-2 rounded-lg bg-black text-white"
+                                />
+                            </div>
+
+                            <div className="flex flex-col">
+                                <label className="self-start">Tên</label>
+                                <input
+                                    type="text"
+                                    name="firstName"
+                                    value={newMember.firstName}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
                                 />
@@ -61,8 +63,8 @@ const AddDialog = ({ toggleDialog }) => {
                                 <label className="self-start">Số điện thoại</label>
                                 <input
                                     type="text"
-                                    name="name"
-                                    value={newBook.name}
+                                    name="phone"
+                                    value={newMember.phone}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
                                 />
@@ -72,8 +74,8 @@ const AddDialog = ({ toggleDialog }) => {
                                 <label className="self-start">Thành phố</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={newBook.name}
+                                        name="city"
+                                        value={newMember.city}
                                         onChange={handleChange}
                                         className="px-3 py-2 rounded-lg bg-black text-white"
                                     />
@@ -83,8 +85,8 @@ const AddDialog = ({ toggleDialog }) => {
                                 <label className="self-start">Email</label>
                                     <input
                                         type="text"
-                                        name="name"
-                                        value={newBook.name}
+                                        name="email"
+                                        value={newMember.email}
                                         onChange={handleChange}
                                         className="px-3 py-2 rounded-lg bg-black text-white"
                                     />

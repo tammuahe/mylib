@@ -37,6 +37,13 @@ const BookMang = () => {
         copy_total: 6,
         copy_available: 4,}
     ]
+
+    const res = async () => {
+        const response = await fetch("http://localhost:8080/api/books");
+        const data = await response.json();
+        console.log(data);
+    }
+
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
