@@ -4,14 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.tlu.mylib_backend.dto.BorrowDTO;
 import com.tlu.mylib_backend.entity.Borrow;
 import com.tlu.mylib_backend.enums.BorrowStatus;
-import com.tlu.mylib_backend.mapper.BorrowMapper;
-import com.tlu.mylib_backend.repository.BookRepository;
 import com.tlu.mylib_backend.repository.BorrowRepository;
-import com.tlu.mylib_backend.repository.MemberRepository;
-import com.tlu.mylib_backend.repository.StaffRepository;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class BorrowServiceImpl implements BorrowService{
     
     private final BorrowRepository borrowRepository;
-    private final BookRepository bookRepository;
-    private final MemberRepository memberRepository;
-    private final StaffRepository staffRepository;
     
     @Override
-    public Borrow create(BorrowDTO borrow) {
-        return borrowRepository.save(BorrowMapper.toEntity(borrow, bookRepository, memberRepository, staffRepository));
+    public Borrow create(Borrow borrow) {
+        return borrowRepository.save(borrow);
     }
 
     @Override
