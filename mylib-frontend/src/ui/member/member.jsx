@@ -41,29 +41,29 @@ const MemberMang = () => {
                 </button>
             </div>
             <div className="w-full px-7 pb-7">
-                <div class="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
-                    <table class="w-full text-left">
-                    <thead class="bg-[#4a4a4a] text-gray-200">
-                        <tr class="border-b border-gray-600">
-                        <th class="px-6 py-4 font-semibold">Họ và Tên</th>
-                        <th class="px-6 py-4 font-semibold">Số điện thoại</th>
-                        <th class="px-6 py-4 font-semibold">Thành phố</th>
-                        <th class="px-6 py-4 font-semibold">Email</th>
-                        <th class="px-6 py-4 font-semibold">Trạng thái</th>
-                        <th class="px-6 py-4"></th>
+                <div className="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
+                    <table className="w-full text-left">
+                    <thead className="bg-[#4a4a4a] text-gray-200">
+                        <tr className="border-b border-gray-600">
+                        <th className="px-6 py-4 font-semibold">Họ và Tên</th>
+                        <th className="px-6 py-4 font-semibold">Số điện thoại</th>
+                        <th className="px-6 py-4 font-semibold">Thành phố</th>
+                        <th className="px-6 py-4 font-semibold">Email</th>
+                        <th className="px-6 py-4 font-semibold">Trạng thái</th>
+                        <th className="px-6 py-4"></th>
                         </tr>
                     </thead>
 
                     <tbody>
                         {members.map((member) => (
-                            <tr key={member.id} class="border-b border-gray-600">
-                                <td class="px-6 py-4 font-semibold">{member.lastName} {member.firstName}</td>
-                                <td class="px-6 py-4">{member.phone}</td>
-                                <td class="px-6 py-4">{member.city}</td>
-                                <td class="px-6 py-4">{member.email}</td>
+                            <tr key={member.id} className="border-b border-gray-600">
+                                <td className="px-6 py-4 font-semibold">{member.lastName} {member.firstName}</td>
+                                <td className="px-6 py-4">{member.phone}</td>
+                                <td className="px-6 py-4">{member.city}</td>
+                                <td className="px-6 py-4">{member.email}</td>
                                 {member.active ?
-                                    <td class="px-6 py-4 font-bold text-green-400">Hoạt động</td> :<td class="px-6 py-4 font-bold text-red-400">Không hoạt động</td>}
-                                <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={() => { setSelectedMember(member); setShowEditDialog(true); }}>≡</td>
+                                    <td className="px-6 py-4 font-bold text-green-400">Hoạt động</td> :<td className="px-6 py-4 font-bold text-red-400">Không hoạt động</td>}
+                                <td className="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={() => { setSelectedMember(member); setShowEditDialog(true); }}>≡</td>
                             </tr>
                         ))}
 
