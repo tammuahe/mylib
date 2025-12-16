@@ -23,6 +23,7 @@ import lombok.Setter;
 public class Author {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "author_id")
     private long id;
 
     @Column(name = "name")
