@@ -5,11 +5,11 @@ import java.util.List;
 import com.tlu.mylib_backend.entity.Member;
 
 public interface MemberService {
-    List<Member> getAllMembers();
+    List<Member> findAll();
 
-    Member addMember(Member member);
+    Member create(Member member);
 
-    Member updateMemberById(long id, Member member);
+    Member update(Long id, Member member);
 
-    void deleteMemberById(long id);
+    void delete(Long id);
 }
