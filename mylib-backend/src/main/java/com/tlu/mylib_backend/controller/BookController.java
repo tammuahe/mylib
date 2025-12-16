@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class BookController {
     private final BookService bookService;
 
-    @GetMapping(params = "keyword")
+    @GetMapping
     public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String keyword) {
         return ResponseEntity.ok(keyword == null ? bookService.findAll() : bookService.search(keyword));
     }
