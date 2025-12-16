@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SquarePen } from "lucide-react";
 import AddBtn from "../components/addBtn";
 import SearchBar from "../components/searchBar";
@@ -38,11 +38,15 @@ const BookMang = () => {
         copy_available: 4,}
     ]
 
-    const res = async () => {
-        const response = await fetch("http://localhost:8080/api/books");
-        const data = await response.json();
-        console.log(data);
-    }
+    const [books, setBooks] = useState([]);
+    
+    useEffect(() => {
+        fetch('http://localhost:8080/book')
+            .then(response => response.json())
+            .then(data => setBooks(data))
+            .then(() => console.log(books))
+            .catch(error => console.error('Error fetching books:', error));
+    }, []);
 
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
