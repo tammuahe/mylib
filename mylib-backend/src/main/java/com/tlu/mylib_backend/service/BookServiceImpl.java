@@ -1,0 +1,53 @@
+package com.tlu.mylib_backend.service;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.tlu.mylib_backend.entity.Book;
+import com.tlu.mylib_backend.repository.BookRepository;
+
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+@Transactional
+public class BookServiceImpl implements BookService {
+    private final BookRepository bookRepository;
+    
+    @Override
+    public Book create(Book book) {
+        return bookRepository.save(book);
+    }
+
+    @Override
+    public void delete(long id) {
+        bookRepository.deleteById(id);
+    }
+
+    @Override
+    public Book update(long id, Book book) {
+        Book toUpdate = bookRepository.getReferenceById(id);
+        toUpdate.setTitle(book.getTitle());
+        toUpdate.setAuthors(book.getAuthors());
+        toUpdate.setCategories(book.getCategories());
+        toUpdate.setCopyAvailable(book.getCopyAvailable());
+        toUpdate.setCopyTotal(book.getCopyTotal());
+        toUpdate.setEdition(book.getEdition());
+        toUpdate.setLocation(book.getLocation());
+        toUpdate.setPublicationYear(book.getPublicationYear());
+        toUpdate.setPublisher(book.getPublisher());
+        return bookRepository.save(toUpdate);
+    }
+
+    @Override
+    public List<Book> findAll() {
+        return bookRepository.findAll();
+    }
+
+    @Override
+    public List<Book> search(String keyword) {
+        return bookRepository.searchByTitleOrAuthor(keyword);
+    }
+}
