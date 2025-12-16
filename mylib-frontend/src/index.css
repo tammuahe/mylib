@@ -17,6 +17,10 @@
   box-sizing: border-box;
   --containerBlack: #1a1e21;
   --black: #0d1012;
+  --cancelBtn: #DB8586;
+  --cancelBtnH: #B66C6E;
+  --delBtn: #EF4A4C;
+  --delBtnH: #D43536;
   color: white;
   background-color: var(--black);
   font-family: Arimo;

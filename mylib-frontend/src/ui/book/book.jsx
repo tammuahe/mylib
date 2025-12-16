@@ -2,9 +2,12 @@ import { useState } from "react";
 import { SquarePen } from "lucide-react";
 import AddBtn from "../components/addBtn";
 import SearchBar from "../components/searchBar";
+import AddDialog from "./dialog/addModal";
+import EditDialog from "./dialog/editDialog";
 
 const BookMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
+    const [showEditDialog, setShowEditDialog] = useState(false);
     const testbook =[
         {book_id: 1,
         title: "Harry Porter and the Philosopher's Stone",
@@ -58,7 +61,7 @@ const BookMang = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="self-center">
+                            <div className="self-center" onClick={() => setShowEditDialog(true)}>
                                 <SquarePen className="w-7 h-7 cursor-pointer"/>
                             </div>
                         </div>
@@ -66,57 +69,10 @@ const BookMang = () => {
                 ))}
             </div>
             {showAddDialog && (
-                <>
-                    <div className="absolute inset-0 bg-(--containerBlack) opacity-75" onClick={() => setShowAddDialog(false)}/>
-                    <div className="fixed inset-0 flex items-center justify-center">
-                        <div className="bg-(--containerBlack) rounded-lg p-6 w-1/3">
-                            <div className="flex flex-1 flex-col">
-                                <h2 className="text-2xl font-bold mb-4 self-center">Thêm mới sách</h2>
-                                <div className="flex flex-col gap-4">
-                                    <div className="flex flex-col">
-                                        <label className="w-auto self-start">Tiêu đề sách</label>
-                                        <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                    </div>
-                                    <div className="flex flex-col">
-                                        <label className="w-auto self-start">Tác giả</label>
-                                        <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                    </div>
-                                    <div className="flex flex-row gap-10">
-                                        <div className="flex flex-col flex-1">
-                                            <label className="w-auto self-start">Thể loại</label>
-                                            <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                        </div>
-                                        <div className="flex flex-col flex-1">
-                                            <label className="w-auto self-start">Xuất bản năm</label>
-                                            <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                        </div>
-                                    </div>
-                                    <div className="flex flex-row gap-10">
-                                        <div className="flex flex-col flex-1">
-                                            <label className="w-auto self-start">Tổng số sách</label>
-                                            <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                        </div>
-                                        <div className="flex flex-col flex-1">
-                                            <label className="w-auto self-start">Phiên bản</label>
-                                            <input type="text" className="flex-1 px-3 py-2 rounded-lg bg-black text-white" />
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="flex justify-end gap-4 pt-12">
-                                <button className="mt-4 px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 cursor-pointer transition">
-                                    Thêm
-                                </button>
-                                <button 
-                                    className="mt-4 px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 cursor-pointer transition"
-                                    onClick={() => setShowAddDialog(false)}
-                                    >
-                                    Huỷ
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </>
+                <AddDialog toggleDialog= {setShowAddDialog}/>
+            )}
+            {showEditDialog && (
+                <EditDialog toggleDialog={setShowEditDialog}/>
             )}
         </div>
     );
