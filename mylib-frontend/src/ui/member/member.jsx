@@ -14,13 +14,13 @@ const MemberMang = () => {
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
                 <div className="flex-1 flex-row flex gap-5">
-                    <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} />
+                    <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
                     <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
                 </div>
                 <button className="flex items-center rounded-lg bg-black px-3 py-1 text-white font-bold gap-6 cursor-pointer hover:bg-black-600 transition stroke">Nhân viên</button>
             </div>
             <div className="w-full px-7 pb-7">
-                <div class="ư-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
+                <div class="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
                     <table class="w-full text-left">
                     <thead class="bg-[#4a4a4a] text-gray-200">
                         <tr class="border-b border-gray-600">
