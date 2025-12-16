@@ -10,6 +10,15 @@ const MemberMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);
 
+    const [members, setMembers] = useState([]);
+
+    useEffect(() => {
+        fetch('http://localhost:8080/member')
+            .then(response => response.json())
+            .then(data => setMembers(data))
+            .catch(error => console.error('Error fetching members:', error));
+    }, []);
+
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
@@ -34,50 +43,17 @@ const MemberMang = () => {
                     </thead>
 
                     <tbody>
-                        <tr class="border-b border-gray-600">
-                        <td class="px-6 py-4 font-semibold">Nguyễn Văn A</td>
-                        <td class="px-6 py-4">0123456789</td>
-                        <td class="px-6 py-4">Hà Nội</td>
-                        <td class="px-6 py-4">anguyenvan@gmail.com</td>
-                        <td class="px-6 py-4 font-bold text-green-400">ACTIVE</td>
-                        <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
+                        {members.map((member) => (
+                            <tr key={member.id} class="border-b border-gray-600">
+                                <td class="px-6 py-4 font-semibold">{member.lastName} {member.firstName}</td>
+                                <td class="px-6 py-4">{member.phone}</td>
+                                <td class="px-6 py-4">{member.city}</td>
+                                <td class="px-6 py-4">{member.email}</td>
+                                <td class="px-6 py-4 font-bold text-green-400">{member.status}</td>
+                                <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
+                            </tr>
+                        ))}
 
-                        <tr class="border-b border-gray-600">
-                        <td class="px-6 py-4 font-semibold">Nguyễn Thị B</td>
-                        <td class="px-6 py-4">0123456789</td>
-                        <td class="px-6 py-4">Tuyên Quang</td>
-                        <td class="px-6 py-4">bnguyenthi@gmail.com</td>
-                        <td class="px-6 py-4 font-bold text-green-400">ACTIVE</td>
-                        <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
-
-                        <tr class="border-b border-gray-600">
-                        <td class="px-6 py-4 font-semibold">Phạm Thế C</td>
-                        <td class="px-6 py-4">0123456789</td>
-                        <td class="px-6 py-4">Hà Nội</td>
-                        <td class="px-6 py-4">c@gmail.com</td>
-                        <td class="px-6 py-4 font-bold text-yellow-400">SUSPENDED</td>
-                        <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
-
-                        <tr class="border-b border-gray-600">
-                        <td class="px-6 py-4 font-semibold">Vũ Quang D</td>
-                        <td class="px-6 py-4">0123456789</td>
-                        <td class="px-6 py-4">Bắc Ninh</td>
-                        <td class="px-6 py-4">d@gmail.com</td>
-                        <td class="px-6 py-4 font-bold text-red-500">EXPIRED</td>
-                        <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
-
-                        <tr>
-                        <td class="px-6 py-4 font-semibold">Nguyễn Anh E</td>
-                        <td class="px-6 py-4">0123456789</td>
-                        <td class="px-6 py-4">Hải Phòng</td>
-                        <td class="px-6 py-4">e@gmail.com</td>
-                        <td class="px-6 py-4 font-bold text-red-500">EXPIRED</td>
-                        <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
                     </tbody>
                     </table>
                 </div>
