@@ -26,7 +26,6 @@ public class Author {
     @Column(name = "author_id")
     private long id;
 
-    @Column(name = "name")
     private String name;
 
     @ManyToMany(mappedBy = "authors")
