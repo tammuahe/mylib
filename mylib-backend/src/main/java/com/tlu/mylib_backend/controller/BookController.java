@@ -3,9 +3,7 @@ package com.tlu.mylib_backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.tlu.mylib_backend.dto.BookDTO;
 import com.tlu.mylib_backend.entity.Book;
-import com.tlu.mylib_backend.mapper.BookMapper;
 import com.tlu.mylib_backend.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,27 +25,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 public class BookController {
     private final BookService bookService;
 
-    @GetMapping
+    @GetMapping(params = "keyword")
     public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String keyword) {
-        List<Book> books;
-
-        if (keyword == null || keyword.isBlank()) {
-            books = bookService.findAll();
-        } else {
-            books = bookService.search(keyword);
-        }
-
-        return ResponseEntity.ok(books);
+        return ResponseEntity.ok(keyword == null ? bookService.findAll() : bookService.search(keyword));
     }
 
     @PostMapping
-    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
-        return ResponseEntity.ok(BookMapper.fromEntity(bookService.create(bookDTO)));
+    public ResponseEntity<Book> addBook(@RequestBody Book book) {
+        return ResponseEntity.ok(bookService.create(book));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BookDTO> updateBook(@PathVariable Long id, @RequestBody BookDTO book) {
-        return ResponseEntity.ok(BookMapper.fromEntity(bookService.update(id, book)));
+    public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book book) {
+        return ResponseEntity.ok(bookService.update(id, book));
     }
 
     @DeleteMapping("/{id}")
