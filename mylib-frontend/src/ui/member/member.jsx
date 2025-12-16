@@ -5,18 +5,25 @@ import AddBtn from  '../components/addBtn';
 
 import AddDialog from "./dialog/addModal";
 import EditDialog from "./dialog/editDialog";
+import StaffDialog from "./staff/staff";
 
 const MemberMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);
+    const [showStaffDialog, setShowStaffDialog] = useState(false);
+    const [selectedMember, setSelectedMember] = useState(null);
 
     const [members, setMembers] = useState([]);
 
-    useEffect(() => {
+    const fetchMembers = () => {
         fetch('http://localhost:8080/member')
             .then(response => response.json())
             .then(data => setMembers(data))
             .catch(error => console.error('Error fetching members:', error));
+    };
+
+    useEffect(() => {
+        fetchMembers();
     }, []);
 
     return ( 
@@ -24,9 +31,14 @@ const MemberMang = () => {
             <div className="w-full p-7 flex gap-5">
                 <div className="flex-1 flex-row flex gap-5">
                     <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
-                    <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
+                    <SearchBar placeHolder="Tìm kiếm thành viên theo tên, số điện thoại, email"/>
                 </div>
-                <button className="flex items-center rounded-lg bg-black px-3 py-1 text-white font-bold gap-6 cursor-pointer hover:bg-black-600 transition stroke">Nhân viên</button>
+                <button 
+                    className="flex items-center rounded-lg bg-black px-3 py-1 text-white font-bold gap-6 cursor-pointer hover:bg-black-600 transition stroke"
+                    onClick={()=>setShowStaffDialog(true)}
+                >
+                    Nhân viên
+                </button>
             </div>
             <div className="w-full px-7 pb-7">
                 <div class="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
@@ -49,8 +61,9 @@ const MemberMang = () => {
                                 <td class="px-6 py-4">{member.phone}</td>
                                 <td class="px-6 py-4">{member.city}</td>
                                 <td class="px-6 py-4">{member.email}</td>
-                                <td class="px-6 py-4 font-bold text-green-400">{member.status}</td>
-                                <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
+                                {member.active ?
+                                    <td class="px-6 py-4 font-bold text-green-400">Hoạt động</td> :<td class="px-6 py-4 font-bold text-red-400">Không hoạt động</td>}
+                                <td class="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={() => { setSelectedMember(member); setShowEditDialog(true); }}>≡</td>
                             </tr>
                         ))}
 
@@ -61,10 +74,13 @@ const MemberMang = () => {
 
             </div>
             {showAddDialog && (
-                <AddDialog toggleDialog= {setShowAddDialog}/>
+                <AddDialog toggleDialog= {setShowAddDialog} onAdded={fetchMembers} />
             )}
             {showEditDialog && (
-                <EditDialog toggleDialog={setShowEditDialog}/>
+                <EditDialog toggleDialog={setShowEditDialog} member={selectedMember} onUpdated={fetchMembers} />
+            )}
+            {showStaffDialog && (
+                <StaffDialog toggleDialog={setShowStaffDialog} />
             )}
         </div>
     );

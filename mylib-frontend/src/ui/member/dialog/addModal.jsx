@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-const AddDialog = ({ toggleDialog }) => {
+const AddDialog = ({ toggleDialog, onAdded }) => {
     const [newMember, setNewMember] = useState({
         firstName: "",
         lastName: "",
@@ -19,14 +19,31 @@ const AddDialog = ({ toggleDialog }) => {
     };
 
     const handleAdd = () =>{
-        console.log(newMember);
+        fetch('http://localhost:8080/member', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newMember)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Member added successfully:', data);
+            toggleDialog(false);
+            if (onAdded) onAdded();
+        })
+        .catch(error => {
+            console.error('Error adding member:', error);
+        });
     }
 
     return (
         <>
             <div
                 className="absolute inset-0 bg-black opacity-75"
-                onClick={() => toggleDialog(false)}
             />
 
             <div className="fixed inset-0 flex items-center justify-center">
