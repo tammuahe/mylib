@@ -2,6 +2,8 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,11 +23,12 @@ import lombok.Setter;
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private long id;
 
-    @Column(name = "category_name")
     private String name;
 
     @ManyToMany(mappedBy = "categories")
+    @JsonBackReference
     private Set<Book> books;
 }

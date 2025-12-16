@@ -28,6 +28,7 @@ public class Borrow {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "borrow_id")
     private long id;
 
     @ManyToOne
