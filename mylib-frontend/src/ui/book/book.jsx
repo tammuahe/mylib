@@ -9,26 +9,30 @@ const BookMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
     const [showEditDialog, setShowEditDialog] = useState(false);    
     const [selectedBook, setSelectedBook] = useState(null);
+    const [keyword, setKeyword] = useState("");
 
     const [books, setBooks] = useState([]);
     
-    const fetchBook = () => {
-        fetch('http://localhost:8080/book')
+    const fetchBook = (searchKeyword = "") => {
+        const url = searchKeyword
+            ? `http://localhost:8080/book?keyword=${encodeURIComponent(searchKeyword)}`
+            : `http://localhost:8080/book`;
+
+        fetch(url)
             .then(response => response.json())
             .then(data => setBooks(data))
-            .then(() => console.log(books))
-            .catch(error => console.error('Error fetching books:', error));
-    }
+            .catch(error => console.error("Error fetching books:", error));
+    };
 
-    useEffect(() => {
-        fetchBook();
-    }, []);
+        useEffect(() => {
+            fetchBook(keyword);
+        }, [keyword]);
 
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
                 <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
-                <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
+                <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)" onSearch={setKeyword}/>
             </div>
             <div className="w-full px-7 pb-7">
                 {books.map((book) => (
@@ -59,7 +63,7 @@ const BookMang = () => {
                 ))}
             </div>
             {showAddDialog && (
-                <AddDialog toggleDialog= {setShowAddDialog}/>
+                <AddDialog toggleDialog= {setShowAddDialog} onAdded={fetchBook}/>
             )}
             {showEditDialog && (
                 <EditDialog toggleDialog={setShowEditDialog} book={selectedBook} onUpdated={fetchBook}/>

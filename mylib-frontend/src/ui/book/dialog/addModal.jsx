@@ -1,36 +1,56 @@
 import { useState, useEffect } from "react";
 
-const AddDialog = ({ toggleDialog }) => {
+const AddDialog = ({ toggleDialog, onAdded }) => {
     const [newBook, setNewBook] = useState({
-        book_id: 0,
         title: "",
-        category: "",
-        publisher: "",
-        publication_year: "",
-        edition: "",
-        name: "",
-        copy_total: "",
-        copy_available: "",
+        categoryIds: [],        
+        publisherId: null,      
+        publicationYear: null,  
+        edition: null,          
+        copyTotal: null,        
+        copyAvailable: null,    
+        locationId: null,       
+        authorIds: []           
     });
 
     const handleChange = (e) => {
         const { name, value } = e.target;
+
         setNewBook((prev) => ({
             ...prev,
-            [name]: value,
+            [name]: value === "" ? null : isNaN(value) ? value : Number(value),
         }));
     };
+
     useEffect(() => {
-        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNewBook((prev) => ({
             ...prev,
-            copy_available: prev.copy_total,
+            copyAvailable: prev.copyTotal,
         }));
-    }, [newBook.copy_total]);
+    }, [newBook.copyTotal]);
 
-    const handleAdd = () =>{
-        console.log(newBook);
-    }
+    const handleAdd = () => {
+        console.log("Payload gửi API:", newBook);
+        fetch('http://localhost:8080/book',{
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify(newBook)
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log('Member added successfully:', data);
+            toggleDialog(false);
+            if (onAdded) onAdded();
+        })
+        .catch(error => {
+            console.error('Error adding member:', error);
+        });
+    };
 
     return (
         <>
@@ -39,127 +59,140 @@ const AddDialog = ({ toggleDialog }) => {
                 onClick={() => toggleDialog(false)}
             />
 
-            {/* Dialog */}
             <div className="fixed inset-0 flex items-center justify-center">
                 <div className="bg-(--containerBlack) rounded-lg p-6 w-1/3">
-                    <div className="flex flex-col">
-                        <h2 className="text-2xl font-bold mb-4 self-center">
-                            Thêm mới sách
-                        </h2>
+                    <h2 className="text-2xl font-bold mb-6 text-center">
+                        Thêm mới sách
+                    </h2>
 
-                        <div className="flex flex-col gap-4">
-                            {/* Title */}
-                            <div className="flex flex-col">
-                                <label className="self-start">Tiêu đề sách</label>
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col">
+                            <label>Tiêu đề sách</label>
+                            <input
+                                type="text"
+                                name="title"
+                                value={newBook.title}
+                                onChange={handleChange}
+                                className="px-3 py-2 rounded-lg bg-black text-white"
+                            />
+                        </div>
+
+                        <div className="flex flex-col">
+                            <label>Tác giả</label>
+                            <select
+                                onChange={(e) =>
+                                    setNewBook({
+                                        ...newBook,
+                                        authorIds: [Number(e.target.value)],
+                                    })
+                                }
+                                className="px-3 py-2 rounded-lg bg-black text-white"
+                            >
+                                <option value="">Chọn tác giả</option>
+                                <option value="1">Frank Herbert</option>
+                                <option value="2">J. R. R. Tolkien</option>
+                            </select>
+                        </div>
+
+                        <div className="flex gap-6">
+                            <div className="flex flex-col flex-1">
+                                <label>Thể loại</label>
+                                <select
+                                    onChange={(e) =>
+                                        setNewBook({
+                                            ...newBook,
+                                            categoryIds: [Number(e.target.value)],
+                                        })
+                                    }
+                                    className="px-3 py-2 rounded-lg bg-black text-white"
+                                >
+                                    <option value="">Chọn thể loại</option>
+                                    <option value="1">Science Fiction</option>
+                                    <option value="2">Fantasy</option>
+                                    <option value="3">History</option>
+                                </select>
+                            </div>
+
+                            <div className="flex flex-col flex-1">
+                                <label>Năm xuất bản</label>
                                 <input
-                                    type="text"
-                                    name="title"
-                                    value={newBook.title}
+                                    type="number"
+                                    name="publicationYear"
+                                    value={newBook.publicationYear ?? ""}
+                                    onChange={handleChange}
+                                    className="px-3 py-2 rounded-lg bg-black text-white"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex gap-6">
+                            <div className="flex flex-col flex-1">
+                                <label>Tổng số sách</label>
+                                <input
+                                    type="number"
+                                    name="copyTotal"
+                                    value={newBook.copyTotal ?? ""}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
                                 />
                             </div>
 
-                            <div className="flex flex-col">
-                                <label className="self-start">Tác giả</label>
+                            <div className="flex flex-col flex-1">
+                                <label>Phiên bản</label>
                                 <input
-                                    type="text"
-                                    name="name"
-                                    value={newBook.name}
+                                    type="number"
+                                    name="edition"
+                                    value={newBook.edition ?? ""}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
                                 />
                             </div>
+                        </div>
 
-                            <div className="flex gap-10">
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Thể loại</label>
-                                    <select
-                                        name="category"
-                                        value={newBook.category}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white appearance-none"
-                                    >
-                                        <option value="">Chọn thể loại</option>
-                                        <option value="Science Fiction">Science Fiction</option>
-                                        <option value="Fantasy">Fantasy</option>
-                                        <option value="History">History</option>
-                                        <option value="Philosophy">Philosophy</option>
-                                        <option value="Technology">Technology</option>
-                                    </select>
-                                </div>
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Xuất bản năm</label>
-                                    <input
-                                        type="number"
-                                        name="publication_year"
-                                        value={newBook.publication_year}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex flex-col">
+                            <label>Nhà xuất bản</label>
+                            <select
+                                onChange={(e) =>
+                                    setNewBook({
+                                        ...newBook,
+                                        publisherId: Number(e.target.value),
+                                    })
+                                }
+                                className="px-3 py-2 rounded-lg bg-black text-white"
+                            >
+                                <option value="">Chọn NXB</option>
+                                <option value="1">NXB Trẻ</option>
+                                <option value="2">NXB Kim Đồng</option>
+                            </select>
+                        </div>
 
-                            <div className="flex gap-10">
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Tổng số sách</label>
-                                    <input
-                                        type="number"
-                                        name="copy_total"
-                                        value={newBook.copy_total}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Phiên bản</label>
-                                    <input
-                                        type="number"
-                                        name="edition"
-                                        value={newBook.edition}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
-                                </div>
-                            </div>
-
-                            <div className="flex gap-10">
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Tổng số sách</label>
-                                    <input
-                                        type="number"
-                                        name="copy_total"
-                                        value={newBook.copy_total}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
-                                </div>
-
-                                <div className="flex flex-col flex-1">
-                                    <label className="self-start">Phiên bản</label>
-                                    <input
-                                        type="number"
-                                        name="edition"
-                                        value={newBook.edition}
-                                        onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
-                                </div>
-                            </div>
+                        <div className="flex flex-col">
+                            <label>Vị trí</label>
+                            <select
+                                onChange={(e) =>
+                                    setNewBook({
+                                        ...newBook,
+                                        locationId: Number(e.target.value),
+                                    })
+                                }
+                                className="px-3 py-2 rounded-lg bg-black text-white"
+                            >
+                                <option value="">Chọn vị trí</option>
+                                <option value="1">Tầng 1</option>
+                                <option value="2">Tầng 2</option>
+                            </select>
                         </div>
                     </div>
 
-                    <div className="flex justify-end gap-4 pt-12">
-                        <button 
-                            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                    <div className="flex justify-end gap-4 pt-10">
+                        <button
+                            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
                             onClick={handleAdd}
                         >
                             Thêm
                         </button>
-
                         <button
-                            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600"
                             onClick={() => toggleDialog(false)}
                         >
                             Huỷ
