@@ -29,35 +29,37 @@ const BorrowMang = () => {
             <div className="w-full px-7 pb-7">
                 <div className="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
                     <table className="w-full text-left">
-                    <thead className="bg-[#4a4a4a] text-gray-200">
-                        <tr className="border-b border-gray-600">
-                        <th className="px-6 py-4 font-semibold">Tên sách</th>
-                        <th className="px-6 py-4 font-semibold">Người mượn</th>
-                        <th className="px-6 py-4 font-semibold">Ngày mượn</th>
-                        <th className="px-6 py-4 font-semibold">Ngày trả</th>
-                        <th className="px-6 py-4 font-semibold">Nhân viên tạo đơn</th>
-                        <th className="px-6 py-4 font-semibold">Trạng thái</th>
-                        <th className="px-6 py-4"></th>
-                        </tr>
-                    </thead>
-                        <tr className="border-b border-gray-600">
-                        <td className="px-6 py-4 font-semibold">Clean Code</td>
-                        <td className="px-6 py-4">Nguyễn Văn A</td>
-                        <td className="px-6 py-4">1/12/2025</td>
-                        <td className="px-6 py-4">20/12/2025</td>
-                        <td className="px-6 py-4 font-semibold">Lê thị X</td>
-                        <td className="px-6 py-4 font-bold text-green-400">ACTIVE</td>
-                        <td className="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
+                        <thead className="bg-[#4a4a4a] text-gray-200">
+                            <tr className="border-b border-gray-600">
+                                <th className="px-6 py-4 font-semibold">Tên sách</th>
+                                <th className="px-6 py-4 font-semibold">Người mượn</th>
+                                <th className="px-6 py-4 font-semibold">Ngày mượn</th>
+                                <th className="px-6 py-4 font-semibold">Ngày trả</th>
+                                <th className="px-6 py-4 font-semibold">Nhân viên tạo đơn</th>
+                                <th className="px-6 py-4 font-semibold">Trạng thái</th>
+                                <th className="px-6 py-4"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr className="border-b border-gray-600">
+                                <td className="px-6 py-4 font-semibold">Clean Code</td>
+                                <td className="px-6 py-4">Nguyễn Văn A</td>
+                                <td className="px-6 py-4">1/12/2025</td>
+                                <td className="px-6 py-4">20/12/2025</td>
+                                <td className="px-6 py-4 font-semibold">Lê thị X</td>
+                                <td className="px-6 py-4 font-bold text-green-400">ACTIVE</td>
+                                <td className="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
+                            </tr>
 
-                        <tr className="border-b border-gray-600">
-                        <td className="px-6 py-4 font-semibold">Nguyễn Thị B</td>
-                        <td className="px-6 py-4">0123456789</td>
-                        <td className="px-6 py-4">Tuyên Quang</td>
-                        <td className="px-6 py-4">bnguyenthi@gmail.com</td>
-                        <td className="px-6 py-4 font-bold text-green-400">ACTIVE</td>
-                        <td className="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
-                        </tr>
+                            <tr className="border-b border-gray-600">
+                                <td className="px-6 py-4 font-semibold">Nguyễn Thị B</td>
+                                <td className="px-6 py-4">0123456789</td>
+                                <td className="px-6 py-4">Tuyên Quang</td>
+                                <td className="px-6 py-4">bnguyenthi@gmail.com</td>
+                                <td className="px-6 py-4 font-bold text-green-400">ACTIVE</td>
+                                <td className="px-6 py-4 text-xl cursor-pointer opacity-0 hover:opacity-100" onClick={()=>setShowEditDialog(true)}>≡</td>
+                            </tr>
+                        </tbody>
                     </table>
                 </div>
             </div>

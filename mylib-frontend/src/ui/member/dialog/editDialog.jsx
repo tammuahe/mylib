@@ -14,6 +14,7 @@ const EditDialog = ({ toggleDialog, member, onUpdated }) => {
 
     useEffect(() => {
         if (member) {
+            // eslint-disable-next-line react-hooks/set-state-in-effect
             setEditMember({
                 id: member.id ?? null,
                 firstName: member.firstName ?? "",

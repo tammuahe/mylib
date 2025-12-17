@@ -113,14 +113,14 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
 
                     <div className="flex justify-end gap-4 pt-12">
                         <button 
-                            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition"
+                            className="px-6 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition cursor-pointer"
                             onClick={handleAdd}
                         >
                             Thêm
                         </button>
 
                         <button
-                            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition"
+                            className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition cursor-pointer"
                             onClick={() => toggleDialog(false)}
                         >
                             Huỷ
