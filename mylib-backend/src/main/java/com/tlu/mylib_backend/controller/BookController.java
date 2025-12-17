@@ -3,7 +3,9 @@ package com.tlu.mylib_backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tlu.mylib_backend.dto.BookDTO;
 import com.tlu.mylib_backend.entity.Book;
+import com.tlu.mylib_backend.mapper.BookMapper;
 import com.tlu.mylib_backend.service.BookService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +29,20 @@ public class BookController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getBooks(@RequestParam(required = false) String keyword) {
-        return ResponseEntity.ok(keyword == null ? bookService.findAll() : bookService.search(keyword));
+        List<Book> books;
+
+        if (keyword == null || keyword.isBlank()) {
+            books = bookService.findAll();
+        } else {
+            books = bookService.search(keyword);
+        }
+
+        return ResponseEntity.ok(books);
     }
 
     @PostMapping
-    public ResponseEntity<Book> addBook(@RequestBody Book book) {
-        return ResponseEntity.ok(bookService.create(book));
+    public ResponseEntity<BookDTO> addBook(@RequestBody BookDTO bookDTO) {
+        return ResponseEntity.ok(BookMapper.fromEntity(bookService.create(bookDTO)));
     }
 
     @PutMapping("/{id}")
