@@ -21,6 +21,7 @@ const AddDialog = ({ toggleDialog }) => {
         }));
     };
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNewBook((prev) => ({
             ...prev,
             copy_available: prev.copy_total,
@@ -73,21 +74,50 @@ const AddDialog = ({ toggleDialog }) => {
                             <div className="flex gap-10">
                                 <div className="flex flex-col flex-1">
                                     <label className="self-start">Thể loại</label>
-                                    <input
-                                        type="text"
+                                    <select
                                         name="category"
                                         value={newBook.category}
                                         onChange={handleChange}
-                                        className="px-3 py-2 rounded-lg bg-black text-white"
-                                    />
+                                        className="px-3 py-2 rounded-lg bg-black text-white appearance-none"
+                                    >
+                                        <option value="">Chọn thể loại</option>
+                                        <option value="Science Fiction">Science Fiction</option>
+                                        <option value="Fantasy">Fantasy</option>
+                                        <option value="History">History</option>
+                                        <option value="Philosophy">Philosophy</option>
+                                        <option value="Technology">Technology</option>
+                                    </select>
                                 </div>
-
                                 <div className="flex flex-col flex-1">
                                     <label className="self-start">Xuất bản năm</label>
                                     <input
                                         type="number"
                                         name="publication_year"
                                         value={newBook.publication_year}
+                                        onChange={handleChange}
+                                        className="px-3 py-2 rounded-lg bg-black text-white"
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="flex gap-10">
+                                <div className="flex flex-col flex-1">
+                                    <label className="self-start">Tổng số sách</label>
+                                    <input
+                                        type="number"
+                                        name="copy_total"
+                                        value={newBook.copy_total}
+                                        onChange={handleChange}
+                                        className="px-3 py-2 rounded-lg bg-black text-white"
+                                    />
+                                </div>
+
+                                <div className="flex flex-col flex-1">
+                                    <label className="self-start">Phiên bản</label>
+                                    <input
+                                        type="number"
+                                        name="edition"
+                                        value={newBook.edition}
                                         onChange={handleChange}
                                         className="px-3 py-2 rounded-lg bg-black text-white"
                                     />

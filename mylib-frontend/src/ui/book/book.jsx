@@ -7,45 +7,21 @@ import EditDialog from "./dialog/editDialog";
 
 const BookMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
-    const [showEditDialog, setShowEditDialog] = useState(false);
-    const testbook =[
-        {book_id: 1,
-        title: "Harry Porter and the Philosopher's Stone",
-        category: 'Khoa học viễn tưởng',
-        publisher: "Scholastic",
-        publication_year: 1997,
-        edition: 1,
-        name: "J.K. Rowling",
-        copy_total: 5,
-        copy_available: 3,},
-        {book_id: 2,
-        title: "To Kill a Mockingbird",
-        category: 'Văn học cổ điển',
-        publisher: "J.B. Lippincott & Co.",
-        publication_year: 1960,
-        edition: 1,
-        name: "Harper Lee",
-        copy_total: 4,
-        copy_available: 1,},
-        {book_id: 3,
-        title: "1984",
-        category: 'Chính trị - Xã hội',
-        publisher: "Secker & Warburg",
-        publication_year: 1949,
-        edition: 1,
-        name: "George Orwell",
-        copy_total: 6,
-        copy_available: 4,}
-    ]
+    const [showEditDialog, setShowEditDialog] = useState(false);    
+    const [selectedBook, setSelectedBook] = useState(null);
 
     const [books, setBooks] = useState([]);
     
-    useEffect(() => {
+    const fetchBook = () => {
         fetch('http://localhost:8080/book')
             .then(response => response.json())
             .then(data => setBooks(data))
             .then(() => console.log(books))
             .catch(error => console.error('Error fetching books:', error));
+    }
+
+    useEffect(() => {
+        fetchBook();
     }, []);
 
     return ( 
@@ -55,26 +31,29 @@ const BookMang = () => {
                 <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
             </div>
             <div className="w-full px-7 pb-7">
-                {testbook.map((book) => (
-                    <div key={book.book_id} className="w-full mb-5">
+                {books.map((book) => (
+                    <div key={book.id} className="w-full mb-5">
                         <div className="w-full h-full flex flex-row bg-[#D9D9D9] rounded-lg px-8 py-3 text-black">
-                            <div className="flex-1">
-                                <div className="flex flex-col">
-                                    <h2 className="font-bold text-xl">{book.title}</h2>
-                                    <p className="text-lg">{book.name}</p>
-                                    <div className="flex flex-row gap-10 text-sm mt-2">
-                                        <p>Thể loại: {book.category}</p>
-                                        <p>Nhà xuất bản: {book.publisher}</p>
-                                        <p className>Xuất bản năm: {book.publication_year}</p>
-                                        <p>Phiên bản: {book.edition}</p>
-                                        <p>Số lượng: {book.copy_total}</p>
-                                        <p>Số bản có thể mượn: {book.copy_total - book.copy_available}</p>
-                                    </div>
-                                </div>
+                        <div className="flex-1">
+                            <div className="flex flex-col">
+                            <h2 className="font-bold text-xl">{book.title}</h2>
+                            <p className="text-lg">
+                                {book.authors.map((author) => author.name).join(", ")}
+                            </p>
+                            <div className="flex flex-row gap-10 text-sm mt-2">
+                                <p>Thể loại: {book.categories.map((cat) => cat.name).join(", ")}</p>
+                                <p>Nhà xuất bản: {book.publisher.name}</p>
+                                <p>Xuất bản năm: {book.publicationYear}</p>
+                                <p>Phiên bản: {book.edition}</p>
+                                <p>Số lượng: {book.copyTotal}</p>
+                                <p>Số bản có thể mượn: {book.copyTotal - book.copyAvailable}</p>
+                                <p>Vị trí sách: {book.location.shelfName} (Tầng {book.location.floorNo})</p>
                             </div>
-                            <div className="self-center" onClick={() => setShowEditDialog(true)}>
-                                <SquarePen className="w-7 h-7 cursor-pointer"/>
                             </div>
+                        </div>
+                        <div className="self-center" onClick={() => {setShowEditDialog(true); setSelectedBook(book);}}>
+                            <SquarePen className="w-7 h-7 cursor-pointer" />
+                        </div>
                         </div>
                     </div>
                 ))}
@@ -83,7 +62,7 @@ const BookMang = () => {
                 <AddDialog toggleDialog= {setShowAddDialog}/>
             )}
             {showEditDialog && (
-                <EditDialog toggleDialog={setShowEditDialog}/>
+                <EditDialog toggleDialog={setShowEditDialog} book={selectedBook} onUpdated={fetchBook}/>
             )}
         </div>
     );
