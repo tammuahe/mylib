@@ -2,7 +2,7 @@ package com.tlu.mylib_backend.entity;
 
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +29,7 @@ public class Author {
     private String name;
 
     @ManyToMany(mappedBy = "authors")
-    @JsonBackReference
+    @JsonIgnore
     private Set<Book> books;
 
 }
