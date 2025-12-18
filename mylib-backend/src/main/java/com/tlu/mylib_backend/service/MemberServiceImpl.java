@@ -42,4 +42,9 @@ public class MemberServiceImpl implements MemberService{
         toUpdate.setPhone(member.getPhone());
         return memberRepository.save(toUpdate);
     }
+
+    @Override
+    public List<Member> search(String keyword) {
+        return memberRepository.searchByName(keyword);
+    }
 }
