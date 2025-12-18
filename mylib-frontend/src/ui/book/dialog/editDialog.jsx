@@ -1,20 +1,42 @@
 import { useState, useEffect } from 'react'
 
 const EditDialog = ({toggleDialog, book, onUpdated}) =>{
-    const [editBook, setEditBook] = useState('');
+    console.log(book)
+    const [editBook, setEditBook] = useState({
+        id: null,
+        title: "",
+        categoryId: null,
+        category: "",
+        publisherId: null,
+        publisher: "",
+        publicationYear: "",
+        edition: "",
+        copyTotal: "",
+        copyAvailable: "",
+        locationId: null,
+        authorId: null,
+        author: ""
+    });
+
     const [showConfirmDialog,setShowConfirmDialog]= useState(false);
 
     useEffect(() => {
         if (book) {
             // eslint-disable-next-line react-hooks/set-state-in-effect
             setEditBook({
-                id: book.id ?? null,
-                firstName: book.title ?? "",
-                author: book.authors[0].name ?? "",
-                category: book.categories[0].name ?? "",
+                id: book.id,
+                title: book.title ?? "",
+                author: book.authors?.[0]?.name ?? "",
+                authorId: book.authors?.[0]?.id ?? "",
+                category: book.categories?.[0]?.name ?? "",
+                categoryId: book.categories?.[0]?.id ?? "",
+                publisherId: book.publisher.id ?? "",
+                publisher: book.publisher.name ?? "",
                 publicationYear: book.publicationYear ?? "",
                 edition: book.edition ?? "",
-                copyTotal: book.copyTotal ?? true,
+                copyTotal: book.copyTotal ?? 0,
+                copyAvailable: book.copyAvailable ?? 0,
+                locationId: book.location.id ?? 1,
             });
         }
     }, [book]);
@@ -27,11 +49,37 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
         }));
     };
 
-    //GỌI API EDIT Ở ĐÂY
-    
-    // GỌI API XÓA Ở ĐÂY
+
+    const handleEditSave = () => {
+        const payload = {
+            title: editBook.title,
+            categoryIds: [editBook.categoryId],
+            publisherId: editBook.publisherId,
+            publicationYear: Number(editBook.publicationYear),
+            edition: Number(editBook.edition),
+            copyTotal: Number(editBook.copyTotal),
+            copyAvailable: Number(editBook.copyAvailable),
+            locationId: editBook.locationId,
+            authorIds: [editBook.authorId],
+        };
+        fetch(`http://localhost:8080/book/${editBook.id}`,{
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload),
+        })
+        .then((response) => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then((data) => {
+            console.log('Member updated successfully:', data);
+            toggleDialog(false);
+            if (onUpdated) onUpdated();
+        })
+        .catch((error) => console.error('Error updating member:', error));
+    }
+
     const handleDelete = () => {
-        console.log(editBook)
         if (!editBook.id) return;
         fetch(`http://localhost:8080/book/${editBook.id}`, {
             method: 'DELETE',
@@ -56,7 +104,8 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                 <input 
                                     type="text" 
                                     className="flex-1 px-3 py-2 rounded-lg bg-black text-white" 
-                                    value={book.title}
+                                    name='title'
+                                    value={editBook.title}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -65,7 +114,8 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                 <input 
                                     type="text" 
                                     className="flex-1 px-3 py-2 rounded-lg bg-black text-white" 
-                                    value={book.authors[0].name}
+                                    name='author'
+                                    value={editBook.author || ""}
                                     onChange={handleChange}
                                 />
                             </div>
@@ -74,16 +124,16 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                     <label className="self-start">Thể loại</label>
                                     <select
                                         name="category"
-                                        value={book.categories[0].name}
+                                        value={editBook.category || ""}
                                         onChange={handleChange}
                                         className="px-3 py-2 rounded-lg bg-black text-white appearance-none"
                                     >
                                         <option value="">Chọn thể loại</option>
-                                        <option value="Science Fiction">Science Fiction</option>
-                                        <option value="Fantasy">Fantasy</option>
-                                        <option value="History">History</option>
-                                        <option value="Philosophy">Philosophy</option>
-                                        <option value="Technology">Technology</option>
+                                        <option value="1">Science Fiction</option>
+                                        <option value="2">Fantasy</option>
+                                        <option value="3">History</option>
+                                        <option value="4">Philosophy</option>
+                                        <option value="5">Technology</option>
                                     </select>
                                 </div>
                                 <div className="flex flex-col flex-1">
@@ -91,7 +141,8 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                     <input 
                                         type="text" 
                                         className="flex-1 px-3 py-2 rounded-lg bg-black text-white" 
-                                        value={book.publicationYear}
+                                        name='publicationYear'
+                                        value={editBook.publicationYear || ""}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -102,7 +153,8 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                     <input 
                                         type="text" 
                                         className="flex-1 px-3 py-2 rounded-lg bg-black text-white" 
-                                        value={book.copyTotal}
+                                        name='copyTotal'
+                                        value={editBook.copyTotal || ""}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -111,7 +163,8 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                                     <input 
                                         type="text" 
                                         className="flex-1 px-3 py-2 rounded-lg bg-black text-white" 
-                                        value={book.edition}
+                                        name='edition'
+                                        value={editBook.edition || ""}
                                         onChange={handleChange}
                                     />
                                 </div>
@@ -128,7 +181,10 @@ const EditDialog = ({toggleDialog, book, onUpdated}) =>{
                             </button>
                         </div>
                         <div className="">
-                            <button className="px-6 py-2 mr-4 bg-green-500 text-black font-semibold rounded-lg hover:bg-green-600 cursor-pointer transition">
+                            <button 
+                                className="px-6 py-2 mr-4 bg-green-500 text-black font-semibold rounded-lg hover:bg-green-600 cursor-pointer transition"
+                                onClick={handleEditSave}
+                            >
                                 Lưu
                             </button>
                             <button 

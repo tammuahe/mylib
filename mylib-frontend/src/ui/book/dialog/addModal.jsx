@@ -23,6 +23,7 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
     };
 
     useEffect(() => {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setNewBook((prev) => ({
             ...prev,
             copyAvailable: prev.copyTotal,
