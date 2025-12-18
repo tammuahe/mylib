@@ -28,9 +28,13 @@ public class BorrowController {
 
     private final BorrowService borrowService;
 
-    @GetMapping
-    public ResponseEntity<List<Borrow>> getAllBorrows() {
-        return ResponseEntity.ok(borrowService.findAll());
+    @GetMapping({ "", "/{id}" })
+    public ResponseEntity<?> getBorrow(
+            @PathVariable(required = false) Long id) {
+        if (id == null) {
+            return ResponseEntity.ok(borrowService.findAll());
+        }
+        return ResponseEntity.ok(borrowService.findById(id));
     }
 
     @PostMapping
