@@ -3,8 +3,10 @@ package com.tlu.mylib_backend.controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tlu.mylib_backend.dto.BorrowDTO;
 import com.tlu.mylib_backend.entity.Borrow;
 import com.tlu.mylib_backend.enums.BorrowStatus;
+import com.tlu.mylib_backend.mapper.BorrowMapper;
 import com.tlu.mylib_backend.service.BorrowService;
 
 import lombok.RequiredArgsConstructor;
@@ -32,8 +34,8 @@ public class BorrowController {
     }
 
     @PostMapping
-    public ResponseEntity<Borrow> addBorrow(@RequestBody Borrow borrow) {
-        return ResponseEntity.ok(borrowService.create(borrow));
+    public ResponseEntity<BorrowDTO> addBorrow(@RequestBody BorrowDTO borrow) {
+        return ResponseEntity.ok(BorrowMapper.fromEntity(borrowService.create(borrow)));
     }
 
     @DeleteMapping("/{id}")

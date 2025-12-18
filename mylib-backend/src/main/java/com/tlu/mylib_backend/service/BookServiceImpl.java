@@ -36,7 +36,8 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book update(long id, Book book) {
+    public Book update(long id, BookDTO bookDTO) {
+        Book book = BookMapper.toEntity(bookDTO, categoryRepository, publisherRepository, locationRepository, authorRepository);
         Book toUpdate = bookRepository.getReferenceById(id);
         toUpdate.setTitle(book.getTitle());
         toUpdate.setAuthors(book.getAuthors());
