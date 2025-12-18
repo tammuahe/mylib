@@ -12,6 +12,26 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
         locationId: null,       
         authorIds: []           
     });
+    const [authors, setAuthors] = useState([]);
+    const [publishers, setPublishers] = useState([]);
+
+    const fetchAuthors = () => {
+        fetch('http://localhost:8080/author')
+            .then(response => response.json())
+            .then(data => setAuthors(data))
+            .catch(error => console.error('Error fetching staffs:', error));
+    }
+    const fetchPublishers = () => {
+        fetch('http://localhost:8080/publisher')
+            .then(response => response.json())
+            .then(data => setPublishers(data))
+            .catch(error => console.error('Error fetching staffs:', error));
+    }
+
+    useEffect(() => {
+        fetchAuthors();
+        fetchPublishers();
+    }, []);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -68,10 +88,10 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
 
                     <div className="flex flex-col gap-4">
                         <div className="flex flex-col">
-                            <label>Tiêu đề sách</label>
                             <input
                                 type="text"
                                 name="title"
+                                placeholder="Tiêu đề sách"
                                 value={newBook.title}
                                 onChange={handleChange}
                                 className="px-3 py-2 rounded-lg bg-black text-white"
@@ -79,7 +99,6 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label>Tác giả</label>
                             <select
                                 onChange={(e) =>
                                     setNewBook({
@@ -90,14 +109,14 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                                 className="px-3 py-2 rounded-lg bg-black text-white"
                             >
                                 <option value="">Chọn tác giả</option>
-                                <option value="1">Frank Herbert</option>
-                                <option value="2">J. R. R. Tolkien</option>
+                                {authors.map((author)=>(
+                                    <option value={author.id}>{author.name}</option>
+                                ))}
                             </select>
                         </div>
 
                         <div className="flex gap-6">
                             <div className="flex flex-col flex-1">
-                                <label>Thể loại</label>
                                 <select
                                     onChange={(e) =>
                                         setNewBook({
@@ -111,14 +130,16 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                                     <option value="1">Science Fiction</option>
                                     <option value="2">Fantasy</option>
                                     <option value="3">History</option>
+                                    <option value="4">Philosophy</option>
+                                    <option value="5">Technology</option>
                                 </select>
                             </div>
 
                             <div className="flex flex-col flex-1">
-                                <label>Năm xuất bản</label>
                                 <input
                                     type="number"
                                     name="publicationYear"
+                                    placeholder="Năm xuất bản"
                                     value={newBook.publicationYear ?? ""}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
@@ -128,10 +149,10 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
 
                         <div className="flex gap-6">
                             <div className="flex flex-col flex-1">
-                                <label>Tổng số sách</label>
                                 <input
                                     type="number"
                                     name="copyTotal"
+                                    placeholder="Tổng số sách"
                                     value={newBook.copyTotal ?? ""}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
@@ -139,10 +160,10 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                             </div>
 
                             <div className="flex flex-col flex-1">
-                                <label>Phiên bản</label>
                                 <input
                                     type="number"
                                     name="edition"
+                                    placeholder="Phiên bản"
                                     value={newBook.edition ?? ""}
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
@@ -151,7 +172,6 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                         </div>
 
                         <div className="flex flex-col">
-                            <label>Nhà xuất bản</label>
                             <select
                                 onChange={(e) =>
                                     setNewBook({
@@ -162,13 +182,13 @@ const AddDialog = ({ toggleDialog, onAdded }) => {
                                 className="px-3 py-2 rounded-lg bg-black text-white"
                             >
                                 <option value="">Chọn NXB</option>
-                                <option value="1">NXB Trẻ</option>
-                                <option value="2">NXB Kim Đồng</option>
+                                {publishers.map((publisher)=>(
+                                    <option value={publisher.id}>{publisher.name}</option>
+                                ))}
                             </select>
                         </div>
 
                         <div className="flex flex-col">
-                            <label>Vị trí</label>
                             <select
                                 onChange={(e) =>
                                     setNewBook({

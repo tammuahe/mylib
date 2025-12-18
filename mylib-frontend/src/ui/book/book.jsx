@@ -4,10 +4,12 @@ import AddBtn from "../components/addBtn";
 import SearchBar from "../components/searchBar";
 import AddDialog from "./dialog/addModal";
 import EditDialog from "./dialog/editDialog";
+import AuthorPublisherDialog from "./authorPublisher/authorPublisher";
 
 const BookMang = () => {
     const [showAddDialog, setShowAddDialog] = useState(false);
-    const [showEditDialog, setShowEditDialog] = useState(false);    
+    const [showEditDialog, setShowEditDialog] = useState(false);
+    const [showAuthorPublisherDialog, setShowAuthorPublisherDialog] = useState(false);
     const [selectedBook, setSelectedBook] = useState(null);
     const [keyword, setKeyword] = useState("");
 
@@ -33,6 +35,12 @@ const BookMang = () => {
             <div className="w-full p-7 flex gap-5">
                 <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
                 <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)" onSearch={setKeyword}/>
+                <button 
+                    className="flex items-center rounded-lg bg-black px-3 py-1 text-white font-bold gap-6 cursor-pointer hover:bg-black-600 transition stroke"
+                    onClick={()=>setShowAuthorPublisherDialog(true)}
+                >
+                    Tác giả và Nhà xuất bản
+                </button>
             </div>
             <div className="w-full px-7 pb-7">
                 {books.map((book) => (
@@ -66,7 +74,10 @@ const BookMang = () => {
                 <AddDialog toggleDialog= {setShowAddDialog} onAdded={fetchBook}/>
             )}
             {showEditDialog && (
-                <EditDialog toggleDialog={setShowEditDialog} book={selectedBook} onUpdated={fetchBook}/>
+                <EditDialog toggleDialog={setShowEditDialog} book={selectedBook} onUpdated={()=>{fetchBook()}}/>
+            )}
+            {showAuthorPublisherDialog && (
+                <AuthorPublisherDialog toggleDialog={setShowAuthorPublisherDialog}/>
             )}
         </div>
     );

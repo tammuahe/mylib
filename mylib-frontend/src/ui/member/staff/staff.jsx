@@ -56,7 +56,7 @@ const Staff = ({ toggleDialog }) => {
                 <div className="bg-(--containerBlack) rounded-lg p-6 w-2/3">
                     <div className="flex flex-row">
                         <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
-                        <button className="ml-auto font-bold text-2xl cursor-pointer" onClick={() => toggleDialog(false)}>X</button>
+                        <button className="ml-auto font-bold text-2xl cursor-pointer" onClick={() => toggleDialog(false)}>✕</button>
                     </div>
                     <div className="w-full mt-3">
                         <div class="w-full mx-auto bg-[#3a3a3a] rounded-xl overflow-hidden border border-gray-600">
