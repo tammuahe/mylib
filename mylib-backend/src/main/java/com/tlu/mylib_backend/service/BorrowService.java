@@ -9,6 +9,8 @@ import com.tlu.mylib_backend.enums.BorrowStatus;
 public interface BorrowService {
     List<Borrow> findAll();
 
+    Borrow findById(Long id);
+
     Borrow create(BorrowDTO borrow);
 
     void delete(long id);

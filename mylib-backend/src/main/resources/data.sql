@@ -63,6 +63,7 @@ INSERT INTO
         member_id,
         first_name,
         last_name,
+        search_name,
         phone,
         city,
         email,
@@ -73,6 +74,7 @@ VALUES
         1,
         'John',
         'Doe',
+        'john doe doe john',
         '111-222-3333',
         'New York',
         'john.doe@example.com',
@@ -82,6 +84,7 @@ VALUES
         2,
         'Jane',
         'Smith',
+        'jane smith smith jane',
         '222-333-4444',
         'Los Angeles',
         'jane.smith@example.com',
@@ -91,6 +94,7 @@ VALUES
         3,
         'Michael',
         'Johnson',
+        'michael johnson johnson michael',
         '333-444-5555',
         'Chicago',
         'michael.johnson@example.com',
@@ -100,6 +104,7 @@ VALUES
         4,
         'Emily',
         'Davis',
+        'emily davis davis emily',
         '444-555-6666',
         'Houston',
         'emily.davis@example.com',
@@ -109,6 +114,7 @@ VALUES
         5,
         'David',
         'Wilson',
+        'david wilson wilson david',
         '555-666-7777',
         'Phoenix',
         'david.wilson@example.com',
@@ -207,17 +213,65 @@ VALUES
     (5, 5);
 
 -- Clean Code -> Robert C. Martin
-INSERT INTO borrow (
-    borrow_id,
-    book_id,
-    member_id,
-    borrow_at,
-    return_at,
-    status,
-    staff_id
-) VALUES
-(1, 1, 1, '2025-12-01 10:00:00', '2025-12-15 10:00:00', 'BORROWED', 1),
-(2, 2, 2, '2025-12-05 09:30:00', NULL, 'BORROWED', 2),
-(3, 3, 3, '2025-11-20 14:00:00', '2025-12-05 14:00:00', 'RETURNED', 1),
-(4, 1, 4, '2025-12-10 11:00:00', NULL, 'OVERDUE', 3),
-(5, 4, 5, '2025-12-12 16:00:00', NULL, 'LOST', 2);
+INSERT INTO
+    borrow (
+        borrow_id,
+        book_id,
+        member_id,
+        borrow_at,
+        return_at,
+        status,
+        staff_id,
+        duration_days
+    )
+VALUES
+    (
+        1,
+        1,
+        1,
+        '2025-12-01 10:00:00',
+        '2025-12-15 10:00:00',
+        'BORROWED',
+        1,
+        14
+    ),
+    (
+        2,
+        2,
+        2,
+        '2025-12-05 09:30:00',
+        NULL,
+        'BORROWED',
+        2,
+        14
+    ),
+    (
+        3,
+        3,
+        3,
+        '2025-11-20 14:00:00',
+        '2025-12-05 14:00:00',
+        'RETURNED',
+        1,
+        15
+    ),
+    (
+        4,
+        1,
+        4,
+        '2025-12-10 11:00:00',
+        NULL,
+        'OVERDUE',
+        3,
+        7
+    ),
+    (
+        5,
+        4,
+        5,
+        '2025-12-12 16:00:00',
+        NULL,
+        'LOST',
+        2,
+        30
+    );

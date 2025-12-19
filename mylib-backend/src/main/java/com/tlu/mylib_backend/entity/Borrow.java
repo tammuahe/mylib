@@ -49,6 +49,9 @@ public class Borrow {
 
     @Enumerated(EnumType.STRING)
     private BorrowStatus status;
+
+    @Column(name = "duration_days")
+    private Integer durationDay;
     
     @ManyToOne
     @JoinColumn(name = "staff_id")

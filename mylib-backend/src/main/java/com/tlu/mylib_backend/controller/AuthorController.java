@@ -28,9 +28,10 @@ public class AuthorController {
     @GetMapping
     public ResponseEntity<List<Author>> getAuthors(@RequestParam(required = false) String keyword) {
         if (keyword == null || keyword.isBlank()) {
-            return ResponseEntity.ok(authorService.search(keyword));
-        } else {
             return ResponseEntity.ok(authorService.findAll());
+        } else {
+            return ResponseEntity.ok(authorService.search(keyword));
+
         }
     }
 
