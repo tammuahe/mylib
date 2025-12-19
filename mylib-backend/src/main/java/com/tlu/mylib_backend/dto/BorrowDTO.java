@@ -21,6 +21,8 @@ public class BorrowDTO {
 
     private LocalDateTime borrowAt;
     private LocalDateTime returnAt;
+    private Integer durationDay;
 
     private BorrowStatus status;
+    
 }
