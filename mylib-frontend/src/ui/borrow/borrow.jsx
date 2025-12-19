@@ -4,7 +4,6 @@ import SearchBar from "../components/searchBar";
 import AddBtn from  '../components/addBtn';
 
 import AddDialog from "./dialog/addModal";
-import EditDialog from "./dialog/editDialog";
 
 import {Funnel, ChevronDown} from 'lucide-react'
 
@@ -14,6 +13,9 @@ const BorrowMang = () => {
     const [borrows, setBorrows] = useState([]);
     const [selectedBorrow, setSelectedBorrow] = useState(null);
     const [openMenuId, setOpenMenuId] = useState(null);
+    const [showDeleteDialog, setShowDeleteDialog] = useState(false);
+    const [borrowToDelete, setBorrowToDelete] = useState(null);
+
     const [openFilter, setOpenFilter] = useState(false);
 
     const [filteredStatus, setFilteredStatus] = useState('ALL');
@@ -55,6 +57,20 @@ const BorrowMang = () => {
         setFilteredStatus(status);
         setOpenFilter(false);
     };
+    const handleDelete = () => {
+        if (!borrowToDelete) return;
+
+        fetch(`http://localhost:8080/borrow/${borrowToDelete.id}`, {
+            method: "DELETE",
+        })
+            .then(res => {
+                if (!res.ok) throw new Error("Delete failed");
+                fetchBorrow();
+                setShowDeleteDialog(false);
+                setBorrowToDelete(null);
+            })
+            .catch(err => console.error("Error deleting borrow:", err));
+    };
 
     const handleConfirmReturn = (borrow) =>{
         fetch(`http://localhost:8080/borrow/${borrow.id}/status/RETURNED`, {
@@ -71,9 +87,8 @@ const BorrowMang = () => {
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-10">
-                <SearchBar placeHolder="Tìm kiếm sách (Tiêu đề, Tác giả,...)"/>
                 <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm đơn mượn"/>
-                <div className="relative">
+                <div className="ml-auto relative">
                     <button
                         className="flex-row center-flex gap-3 bg-black rounded px-3 py-1"
                         onClick={(e) => { e.stopPropagation(); setOpenFilter(!openFilter); }}
@@ -109,6 +124,7 @@ const BorrowMang = () => {
                                 <th className="px-6 py-4 font-semibold">Tên sách</th>
                                 <th className="px-6 py-4 font-semibold">Người mượn</th>
                                 <th className="px-6 py-4 font-semibold">Ngày mượn</th>
+                                <th className="px-6 py-4 font-semibold">Thời hạn mượn</th>
                                 <th className="px-6 py-4 font-semibold">Ngày trả</th>
                                 <th className="px-6 py-4 font-semibold">Nhân viên tạo đơn</th>
                                 <th className="px-6 py-4 font-semibold">Trạng thái</th>
@@ -129,7 +145,9 @@ const BorrowMang = () => {
                             <td className="px-6 py-4">
                                 {new Date(borrow.borrowAt).toLocaleDateString("vi-VN")}
                             </td>
-                            
+                            <td className="px-6 py-4">
+                                {borrow.durationDay}
+                            </td>
                             <td className="px-6 py-4">
                                 {borrow.returnAt
                                 ? new Date(borrow.returnAt).toLocaleDateString("vi-VN")
@@ -188,9 +206,10 @@ const BorrowMang = () => {
                                         )}
 
                                         <button
-                                            className="w-full text-left px-4 py-2 cursor-pointer hover:bg-black"
+                                            className="w-full text-left px-4 py-2 cursor-pointer hover:bg-black text-red-400"
                                             onClick={() => {
-                                                console.log("Delete borrow:", borrow.id);
+                                                setBorrowToDelete(borrow);
+                                                setShowDeleteDialog(true);
                                                 setOpenMenuId(null);
                                             }}
                                         >
@@ -208,6 +227,49 @@ const BorrowMang = () => {
             {showAddDialog && (
                 <AddDialog toggleDialog= {setShowAddDialog}/>
             )}
+            {showDeleteDialog && (
+                <>
+                    <div
+                        className="fixed inset-0 bg-black opacity-75 z-[9998]"
+                        onClick={() => setShowDeleteDialog(false)}
+                    />
+
+                    <div className="fixed inset-0 flex items-center justify-center z-[9999]">
+                        <div className="bg-(--containerBlack) rounded-lg p-6 w-[400px] text-white">
+                            <h3 className="text-xl font-semibold mb-4">
+                                Xác nhận xoá đơn mượn
+                            </h3>
+
+                            <p className="mb-6 text-gray-300">
+                                Bạn có chắc chắn muốn xoá đơn mượn của
+                                <span className="font-semibold text-white">
+                                    {" "}
+                                    {borrowToDelete?.member?.firstName}{" "}
+                                    {borrowToDelete?.member?.lastName}
+                                </span>
+                                ?
+                            </p>
+
+                            <div className="flex justify-end gap-4">
+                                <button
+                                    className="px-4 py-2 rounded bg-gray-600 hover:bg-gray-700"
+                                    onClick={() => setShowDeleteDialog(false)}
+                                >
+                                    Huỷ
+                                </button>
+
+                                <button
+                                    className="px-4 py-2 rounded bg-red-600 hover:bg-red-700"
+                                    onClick={handleDelete}
+                                >
+                                    Xoá
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </>
+            )}
+
             
         </div>
     );

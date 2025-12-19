@@ -19,7 +19,7 @@ const BookMang = () => {
         const url = searchKeyword
             ? `http://localhost:8080/book?keyword=${encodeURIComponent(searchKeyword)}`
             : `http://localhost:8080/book`;
-
+        
         fetch(url)
             .then(response => response.json())
             .then(data => setBooks(data))
