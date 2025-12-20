@@ -1,19 +1,14 @@
 import { useState, useEffect, useRef } from "react";
 
-/**
- * Lấy thời điểm hiện tại cho input datetime-local
- * Format: yyyy-MM-ddTHH:mm (local time)
- */
 const getNowForInput = () => {
     const now = new Date();
     now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
     return now.toISOString().slice(0, 16);
 };
 
-const AddDialog = ({ toggleDialog }) => {
+const AddDialog = ({ toggleDialog, onAdded }) => {
     const inputRef = useRef(null);
 
-    // ===== STATE CHUẨN THEO BODY BE =====
     const [newBorrow, setNewBorrow] = useState({
         bookId: "",
         memberId: "",
@@ -26,7 +21,6 @@ const AddDialog = ({ toggleDialog }) => {
     const [books, setBooks] = useState([]);
     const [members, setMembers] = useState([]);
 
-    // ===== FETCH DATA =====
     useEffect(() => {
         fetch("http://localhost:8080/book")
             .then(res => res.json())
@@ -44,7 +38,6 @@ const AddDialog = ({ toggleDialog }) => {
             .catch(err => console.error("Error fetching staffs:", err));
     }, []);
 
-    // ===== HANDLE CHANGE =====
     const handleChange = (e) => {
         const { name, value } = e.target;
         setNewBorrow(prev => ({
@@ -53,13 +46,12 @@ const AddDialog = ({ toggleDialog }) => {
         }));
     };
 
-    // ===== SUBMIT =====
     const handleAdd = () => {
         const payload = {
             bookId: Number(newBorrow.bookId),
             memberId: Number(newBorrow.memberId),
             staffId: Number(newBorrow.staffId),
-            borrowAt: `${newBorrow.borrowAt}:00.000`, // local datetime cho BE
+            borrowAt: `${newBorrow.borrowAt}:00.000`,
             durationDay: Number(newBorrow.durationDay),
             status: "BORROWED"
         };
@@ -70,18 +62,16 @@ const AddDialog = ({ toggleDialog }) => {
                 "Content-Type": "application/json"
             },
             body: JSON.stringify(payload)
-        }).then(() => toggleDialog(false));
+        }).then(() => {onAdded(); toggleDialog(false);});
     };
 
     return (
         <>
-            {/* Overlay */}
             <div
                 className="fixed inset-0 bg-black opacity-75"
                 onClick={() => toggleDialog(false)}
             />
 
-            {/* Dialog */}
             <div className="fixed inset-0 flex items-center justify-center">
                 <div className="bg-(--containerBlack) rounded-lg p-6 w-1/3">
                     <div className="flex flex-col">
@@ -90,7 +80,6 @@ const AddDialog = ({ toggleDialog }) => {
                         </h2>
 
                         <div className="flex flex-col gap-4">
-                            {/* SÁCH */}
                             <select
                                 name="bookId"
                                 value={newBorrow.bookId}
@@ -105,7 +94,6 @@ const AddDialog = ({ toggleDialog }) => {
                                 ))}
                             </select>
 
-                            {/* NHÂN VIÊN */}
                             <select
                                 name="staffId"
                                 value={newBorrow.staffId}
@@ -120,7 +108,6 @@ const AddDialog = ({ toggleDialog }) => {
                                 ))}
                             </select>
 
-                            {/* THÀNH VIÊN */}
                             <select
                                 name="memberId"
                                 value={newBorrow.memberId}
@@ -135,7 +122,6 @@ const AddDialog = ({ toggleDialog }) => {
                                 ))}
                             </select>
 
-                            {/* NGÀY MƯỢN */}
                             <div
                                 className="flex flex-col cursor-pointer"
                                 onClick={() => inputRef.current?.showPicker()}
@@ -151,7 +137,6 @@ const AddDialog = ({ toggleDialog }) => {
                                 />
                             </div>
 
-                            {/* SỐ NGÀY MƯỢN */}
                             <div className="flex flex-col">
                                 <label className="self-start">Số ngày mượn</label>
                                 <input

@@ -225,7 +225,7 @@ const BorrowMang = () => {
                 </div>
             </div>
             {showAddDialog && (
-                <AddDialog toggleDialog= {setShowAddDialog}/>
+                <AddDialog toggleDialog= {setShowAddDialog} onAdded={fetchBorrow}/>
             )}
             {showDeleteDialog && (
                 <>

@@ -34,6 +34,13 @@ const EditDialog = ({ toggleDialog, member, onUpdated }) => {
             [name]: value,
         }));
     };
+    const handleToggleActive = (e) => {
+        const { checked } = e.target;
+        setEditMember((prev) => ({
+            ...prev,
+            active: checked,
+        }));
+    };
 
     const handleSave = () => {
         if (!editMember.id) return;
@@ -128,6 +135,18 @@ const EditDialog = ({ toggleDialog, member, onUpdated }) => {
                                     onChange={handleChange}
                                     className="px-3 py-2 rounded-lg bg-black text-white"
                                 />
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <input
+                                    type="checkbox"
+                                    id="active"
+                                    checked={editMember.active}
+                                    onChange={handleToggleActive}
+                                    className="w-5 h-5 cursor-pointer"
+                                />
+                                <label htmlFor="active" className="cursor-pointer select-none">
+                                    Đang hoạt động
+                                </label>
                             </div>
                         </div>
                     </div>

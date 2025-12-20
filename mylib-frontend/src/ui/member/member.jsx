@@ -12,26 +12,32 @@ const MemberMang = () => {
     const [showEditDialog, setShowEditDialog] = useState(false);
     const [showStaffDialog, setShowStaffDialog] = useState(false);
     const [selectedMember, setSelectedMember] = useState(null);
+    const [keyword, setKeyword] = useState("");
 
     const [members, setMembers] = useState([]);
 
-    const fetchMembers = () => {
-        fetch('http://localhost:8080/member')
+
+    const fetchMembers = (searchKeyword = "") => {
+        const url = searchKeyword
+            ? `http://localhost:8080/member?keyword=${encodeURIComponent(searchKeyword)}`
+            : `http://localhost:8080/member`;
+        
+        fetch(url)
             .then(response => response.json())
             .then(data => setMembers(data))
-            .catch(error => console.error('Error fetching members:', error));
+            .catch(error => console.error("Error fetching books:", error));
     };
 
     useEffect(() => {
-        fetchMembers();
-    }, []);
+        fetchMembers(keyword);
+    }, [keyword]);
 
     return ( 
         <div className="h-full flex-1 flex-col center-flex bg-(--containerBlack) rounded-lg text-white stroke">
             <div className="w-full p-7 flex gap-5">
                 <div className="flex-1 flex-row flex gap-5">
                     <AddBtn showDialog={showAddDialog} setShowDialog={setShowAddDialog} placeHolder="Thêm"/>
-                    <SearchBar placeHolder="Tìm kiếm thành viên theo tên, số điện thoại, email"/>
+                    <SearchBar placeHolder="Tìm kiếm thành viên theo tên, số điện thoại, email" onSearch={setKeyword}/>
                 </div>
                 <button 
                     className="flex items-center rounded-lg bg-black px-3 py-1 text-white font-bold gap-6 cursor-pointer hover:bg-black-600 transition stroke"

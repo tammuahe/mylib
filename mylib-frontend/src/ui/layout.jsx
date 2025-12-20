@@ -2,6 +2,7 @@ import Sidebar from "./sidebar/sidebar";
 import BookMang from "./book/book";
 import MemberMang from "./member/member";
 import BorrowMang from "./borrow/borrow";
+import Statistical from "./statistical/statistical";
 import { useState } from "react";
 
 const LibrarySystem = () => {
@@ -19,6 +20,7 @@ const LibrarySystem = () => {
                 {selectedFunc === 'book' && <BookMang />}
                 {selectedFunc === 'member' && <MemberMang />}
                 {selectedFunc === 'borrow' && <BorrowMang />}
+                {selectedFunc === 'statistical' && <Statistical />}
             </div>
         </>
     );
