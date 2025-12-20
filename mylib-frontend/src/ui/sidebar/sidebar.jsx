@@ -13,6 +13,7 @@ const Sidebar = ({ selectedFunc, onFuncChange }) => {
             <button className={`${baseBtn} ${selectedFunc === 'book' ? 'bg-[#34393e]' : ''}`} onClick={handleChangeFunc} name="book">Quản lý sách</button>
             <button className={`${baseBtn} ${selectedFunc === 'member' ? 'bg-[#34393e]' : ''}`} onClick={handleChangeFunc} name="member">Quản lý thành viên</button>
             <button className={`${baseBtn} ${selectedFunc === 'borrow' ? 'bg-[#34393e]' : ''}`} onClick={handleChangeFunc} name="borrow">Quản lý mượn sách</button>
+            <button className={`${baseBtn} ${selectedFunc === 'statistical' ? 'bg-[#34393e]' : ''}`} onClick={handleChangeFunc} name="statistical">Thống kê</button>
         </div>
     );
 }
