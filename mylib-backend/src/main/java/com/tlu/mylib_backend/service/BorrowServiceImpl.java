@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import com.tlu.mylib_backend.dto.BorrowDTO;
+import com.tlu.mylib_backend.entity.Book;
 import com.tlu.mylib_backend.entity.Borrow;
 import com.tlu.mylib_backend.enums.BorrowStatus;
 import com.tlu.mylib_backend.mapper.BorrowMapper;
@@ -31,6 +32,8 @@ public class BorrowServiceImpl implements BorrowService {
 
     @Override
     public Borrow create(BorrowDTO borrow) {
+        Book beingBorrowed = bookRepository.getReferenceById(borrow.getBookId());
+        beingBorrowed.setCopyAvailable(beingBorrowed.getCopyAvailable() - 1);
         return borrowRepository.save(BorrowMapper.toEntity(borrow, bookRepository, memberRepository, staffRepository));
     }
 
@@ -47,9 +50,12 @@ public class BorrowServiceImpl implements BorrowService {
     @Override
     public Borrow updateStatus(long id, BorrowStatus borrowStatus) {
         Borrow toUpdate = borrowRepository.getReferenceById(id);
+        Book beingBorrowed = bookRepository.getReferenceById(toUpdate.getBook().getId());
         toUpdate.setStatus(borrowStatus);
         if (borrowStatus == BorrowStatus.RETURNED) {
             toUpdate.setReturnAt(LocalDateTime.now());
+            beingBorrowed.setCopyAvailable(beingBorrowed.getCopyAvailable() + 1);
+
         }
         return borrowRepository.save(toUpdate);
     }
@@ -64,7 +70,7 @@ public class BorrowServiceImpl implements BorrowService {
     @Scheduled(cron = "0 0 0 * * ?")
     public void updateOverdueStatus() {
         List<Borrow> overdueBorrows = borrowRepository.findOverdueBorrows(BorrowStatus.BORROWED);
-        
+
         for (Borrow borrow : overdueBorrows) {
             borrow.setStatus(BorrowStatus.OVERDUE);
         }
